@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chessboard {
+    width: 480px; /* Adjust the size as needed */
+    height: 480px; /* Adjust the size as needed */
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .square {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .light {
+    background-color: #f0d9b5;
+  }
+  
+  .dark {
+    background-color: #b58863;
+  }
+  
+  .piece {
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  /* Define background images for each chess piece */
+  .black-rook {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/br.png');
+  }
+  .black-knight {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bn.png');
+  }
+
+  .black-bishop{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bb.png');
+  }
+
+  .black-queen{
+    background-image:url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bq.png');
+  }
+
+  .black-king{
+    background-image:url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bk.png');
+  }
+
+  .black-pawn{
+    background-image:url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bp.png');
+  }
+  /* Repeat for all pieces */
+  
+  
