@@ -59,6 +59,31 @@ body {
   .black-pawn{
     background-image:url('https://www.chess.com/chess-themes/pieces/neo_wood/150/bp.png');
   }
+
+  .white-rook{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wr.png');
+  }
+
+  .white-knight{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wn.png');
+  }
+
+  .white-bishop{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wb.png');
+  }
+
+  .white-queen{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wq.png');
+  }
+
+  .white-king{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wk.png');
+  }
+
+  .white-pawn{
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo_wood/150/wp.png');
+  }
+
   /* Repeat for all pieces */
   
   
