@@ -1,6 +1,8 @@
 function movePawn(pawn) {
     let currentPosition = pawn.parentNode;
 
+    console.log(currentPosition)
+
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
 
@@ -8,15 +10,29 @@ function movePawn(pawn) {
 
     let newRow = rowIndex + direction;
 
-    var newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
+    let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
+
+    let newDiv = document.createElement("div");
+    newDiv.style.backgroundColor = "rgba(0, 0, 0, .1)";
+    newDiv.style.width = "35%";
+    newDiv.style.height = "35%";
+    newDiv.style.borderRadius = "50%";
+    newDiv.style.boxSizing = "border-box";
 
     //Check if square is occupied
     if (!(newSquare.children.length === 0)) {
         console.log('Invalid movement - Square is occupied');
+        console.log(newSquare.children[0]);
+        //newSquare.remove(newSquare.children[0]);
         return;
     }
 
-    newSquare.appendChild(pawn);
+
+
+    newSquare.append(newDiv);
+
+    console.log(newSquare);
+
 }
 
 function getChessPieceColumnIndex(pieceX) {
