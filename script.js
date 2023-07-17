@@ -3,7 +3,6 @@ let previousPawn = null;
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
     let chessboard = document.getElementById("chessboard");
-    console.log('CLICKED ELEMENT',clickedElement);
 
     if (!chessboard.contains(clickedElement)) {
         clearAllHints();
@@ -15,6 +14,7 @@ document.addEventListener("click", function (event) {
 });
 
 function movePawn(pawn) {
+    clearAllHints();
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
@@ -28,12 +28,8 @@ function movePawn(pawn) {
         newSquare_2.append(createHintElement());
     }
 
-    newSquare.append(hint);
-
-    if (previousPawn !== null) {
-        removeHighlight(previousPawn);
-        previousPawn = null;
-        return;
+    if (newSquare.children.length == 0) {
+        newSquare.append(hint);
     }
 
     previousPawn = pawn;
@@ -51,25 +47,8 @@ function movePawnToHint(hintElement) {
     newSquare.appendChild(pawn);
 
     previousPawn = pawn;
-    removeHighlight(pawn);
+    clearAllHints();
     movePawn(pawn);
-}
-
-function removeHighlight(pawn) {
-    let currentPosition = pawn.parentNode;
-    let rowIndex = getChessPieceRowIndex(pawn);
-    let colIndex = getChessPieceColumnIndex(pawn);
-    let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
-    let newRow = rowIndex + direction;
-    let square = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
-    let square2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
-
-    if (square.children.length > 0) {
-        square.children[0].remove();
-        if (rowIndex == 6 && pawn.classList.contains('black-pawn')) {
-            square2.children[0].remove();
-        }
-    }
 }
 
 function getChessPieceColumnIndex(pieceX) {
@@ -91,6 +70,10 @@ function createHintElement() {
     hint.style.borderRadius = "50%";
     hint.style.boxSizing = "border-box";
     return hint;
+}
+
+function checkChessLocation() {
+
 }
 
 function clearAllHints() {
