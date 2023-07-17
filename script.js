@@ -95,6 +95,57 @@ function moveRook(rook) {
     previousPiece = rook;
 }
 
+function moveKnight(knight) {
+    clearAllHints();
+    let currentPosition = knight.parentNode;
+    let rowIndex = getChessPieceRowIndex(knight);
+    let colIndex = getChessPieceColumnIndex(knight);
+
+    let topLeftSquare_1 = (rowIndex - 1 >= 0 && colIndex - 2 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex - 1].children[colIndex - 2] : currentPosition;
+    let topLeftSquare_2 = (rowIndex - 2 >= 0 && colIndex - 1 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex - 2].children[colIndex - 1] : currentPosition;
+    let topRightSquare_3 = (rowIndex - 2 >= 0 && colIndex + 1 < 8) ? currentPosition.parentNode.parentNode.children[rowIndex - 2].children[colIndex + 1] : currentPosition;
+    let topRightSquare_4 = (rowIndex - 1 >= 0 && colIndex + 2 < 8) ? currentPosition.parentNode.parentNode.children[rowIndex - 1].children[colIndex + 2] : currentPosition;
+    let bottomRightSquare_5 = (rowIndex + 1 < 8 && colIndex + 2 < 8) ? currentPosition.parentNode.parentNode.children[rowIndex + 1].children[colIndex + 2] : currentPosition;
+    let bottomRightSquare_6 = (rowIndex + 2 < 8 && colIndex + 1 < 8) ? currentPosition.parentNode.parentNode.children[rowIndex + 2].children[colIndex + 1] : currentPosition;
+    let bottomLeftSquare_7 = (rowIndex + 1 < 8 && colIndex - 2 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 1].children[colIndex - 2] : currentPosition;
+    let bottomLeftSquare_8 = (rowIndex + 2 < 8 && colIndex - 1 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 2].children[colIndex - 1] : currentPosition;
+
+    if (topLeftSquare_1.children.length == 0) {
+        topLeftSquare_1.append(createHintElement());
+    }
+
+    if (topLeftSquare_2.children.length == 0) {
+        topLeftSquare_2.append(createHintElement());
+    }
+
+    if (topRightSquare_3.children.length == 0) {
+        topRightSquare_3.append(createHintElement());
+    }
+
+    if (topRightSquare_4.children.length == 0) {
+        topRightSquare_4.append(createHintElement());
+    }
+
+    if (bottomRightSquare_5.children.length == 0) {
+        bottomRightSquare_5.append(createHintElement());
+    }
+
+    if (bottomRightSquare_6.children.length == 0) {
+        bottomRightSquare_6.append(createHintElement());
+    }
+
+    if (bottomLeftSquare_7.children.length == 0) {
+        bottomLeftSquare_7.append(createHintElement());
+    }
+
+    if (bottomLeftSquare_8.children.length == 0) {
+        bottomLeftSquare_8.append(createHintElement());
+    }
+
+    previousPiece = knight;
+
+}
+
 
 function getChessPieceColumnIndex(pieceX) {
     let colIndex = Array.from(pieceX.parentNode.parentNode.children).indexOf(pieceX.parentNode);
