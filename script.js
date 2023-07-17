@@ -1,4 +1,4 @@
-let previousPawn = null;
+let previousPiece = null;
 
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
@@ -21,7 +21,6 @@ function movePawn(pawn) {
     let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
     let newRow = rowIndex + direction;
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
-    let hint = createHintElement();
 
     if (rowIndex == 6 && pawn.classList.contains('black-pawn')) {
         let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
@@ -29,14 +28,14 @@ function movePawn(pawn) {
     }
 
     if (newSquare.children.length == 0) {
-        newSquare.append(hint);
+        newSquare.append(createHintElement());
     }
 
-    previousPawn = pawn;
+    previousPiece = pawn;
 }
 
 function movePawnToHint(hintElement) {
-    let pawn = previousPawn;
+    let pawn = previousPiece;
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
@@ -46,10 +45,56 @@ function movePawnToHint(hintElement) {
 
     newSquare.appendChild(pawn);
 
-    previousPawn = pawn;
+    previousPiece = pawn;
     clearAllHints();
     movePawn(pawn);
 }
+
+function moveRook(rook) {
+    clearAllHints();
+    let currentPosition = rook.parentNode;
+    let rowIndex = getChessPieceRowIndex(rook);
+    let colIndex = getChessPieceColumnIndex(rook);
+
+    for (let rookX = colIndex + 1; rookX < 8; rookX++) {
+        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
+        if (newSquareX.children.length === 0) {
+            newSquareX.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    for (let rookX = colIndex - 1; rookX >= 0; rookX--) {
+        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
+        if (newSquareX.children.length === 0) {
+            newSquareX.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    for (let rookY = rowIndex + 1; rookY < 8; rookY++) {
+        let newSquareY = currentPosition.parentNode.parentNode.children[rookY].children[colIndex];
+        if (newSquareY.children.length === 0) {
+            newSquareY.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    for (let rookY = rowIndex - 1; rookY >= 0; rookY--) {
+        let newSquareY = currentPosition.parentNode.parentNode.children[rookY].children[colIndex];
+        if (newSquareY.children.length === 0) {
+            newSquareY.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    previousPiece = rook;
+}
+
 
 function getChessPieceColumnIndex(pieceX) {
     let colIndex = Array.from(pieceX.parentNode.parentNode.children).indexOf(pieceX.parentNode);
