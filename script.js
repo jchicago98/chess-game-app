@@ -32,6 +32,8 @@ function movePawn(pawn) {
 
     if (previousPawn !== null) {
         removeHighlight(previousPawn);
+        previousPawn = null;
+        return;
     }
 
     previousPawn = pawn;
