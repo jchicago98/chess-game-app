@@ -146,6 +146,62 @@ function moveKnight(knight) {
 
 }
 
+function moveBishop(bishop) {
+    clearAllHints();
+    let currentPosition = bishop.parentNode;
+    let rowIndex = getChessPieceRowIndex(bishop);
+    let colIndex = getChessPieceColumnIndex(bishop);
+    let localCounter = 0;
+
+    for (let bishopLeftUp = colIndex - 1; bishopLeftUp >= 0; bishopLeftUp--) {
+        localCounter++;
+        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex - localCounter].children[bishopLeftUp];
+        if (newSquareX.children.length === 0) {
+            newSquareX.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    localCounter = 0;
+
+    for (let bishopRightDown = colIndex + 1; bishopRightDown < 8; bishopRightDown++) {
+        localCounter++;
+        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex + localCounter]?.children[bishopRightDown];
+        if (newSquareX && newSquareX.children.length === 0) {
+            newSquareX.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    localCounter = 0;
+
+    for (let bishopLeftDown = colIndex - 1; bishopLeftDown >= 0; bishopLeftDown--) {
+        localCounter++;
+        let newSquare = currentPosition.parentNode.parentNode.children[rowIndex + localCounter]?.children[bishopLeftDown];
+        if (newSquare && newSquare.children.length === 0) {
+            newSquare.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    localCounter = 0;
+
+    for (let bishopRightUp = colIndex + 1; bishopRightUp < 8; bishopRightUp++) {
+        localCounter++;
+        let newSquare = currentPosition.parentNode.parentNode.children[rowIndex - localCounter]?.children[bishopRightUp];
+        if (newSquare && newSquare.children.length === 0) {
+            newSquare.append(createHintElement());
+        } else {
+            break;
+        }
+    }
+
+    previousPiece = bishop;
+}
+
 
 function getChessPieceColumnIndex(pieceX) {
     let colIndex = Array.from(pieceX.parentNode.parentNode.children).indexOf(pieceX.parentNode);
@@ -166,10 +222,6 @@ function createHintElement() {
     hint.style.borderRadius = "50%";
     hint.style.boxSizing = "border-box";
     return hint;
-}
-
-function checkChessLocation() {
-
 }
 
 function clearAllHints() {
