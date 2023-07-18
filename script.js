@@ -8,7 +8,7 @@ document.addEventListener("click", function (event) {
         clearAllHints();
     }
     else if (clickedElement.classList.contains("hint")) {
-        movePawnToHint(clickedElement);
+        movePieceToHint(clickedElement);
         clearAllHints();
     }
 });
@@ -34,7 +34,7 @@ function movePawn(pawn) {
     previousPiece = pawn;
 }
 
-function movePawnToHint(hintElement) {
+function movePieceToHint(hintElement) {
     let pawn = previousPiece;
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
@@ -51,7 +51,9 @@ function movePawnToHint(hintElement) {
 }
 
 function moveRook(rook) {
-    clearAllHints();
+    if(!rook.classList.contains('black-queen') && !rook.classList.contains('white-queen')){
+        clearAllHints();
+    }
     let currentPosition = rook.parentNode;
     let rowIndex = getChessPieceRowIndex(rook);
     let colIndex = getChessPieceColumnIndex(rook);
@@ -147,7 +149,9 @@ function moveKnight(knight) {
 }
 
 function moveBishop(bishop) {
-    clearAllHints();
+    if(!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen')){
+        clearAllHints();
+    }
     let currentPosition = bishop.parentNode;
     let rowIndex = getChessPieceRowIndex(bishop);
     let colIndex = getChessPieceColumnIndex(bishop);
@@ -200,6 +204,14 @@ function moveBishop(bishop) {
     }
 
     previousPiece = bishop;
+}
+
+function moveQueen(queen){
+    clearAllHints();
+    moveBishop(queen);
+    moveRook(queen);
+
+    previousPiece = queen;
 }
 
 
