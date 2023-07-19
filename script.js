@@ -3,12 +3,21 @@ let previousPiece = null;
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
     let chessboard = document.getElementById("chessboard");
+    //console.log(clickedElement);
+    let rowIndex = getChessPieceRowIndex(clickedElement);
+    let colIndex = getChessPieceColumnIndex(clickedElement);
+    console.log(clickedElement.children[0]);
+
 
     if (!chessboard.contains(clickedElement)) {
         clearAllHints();
     }
     else if (clickedElement.classList.contains("hint")) {
         movePieceToHint(clickedElement);
+        clearAllHints();
+    }
+    else if (clickedElement.children[0]?.classList.contains("hint")) {
+        movePieceToHint(clickedElement.children[0]);
         clearAllHints();
     }
 });
