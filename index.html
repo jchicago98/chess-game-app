@@ -12,26 +12,65 @@
 </head>
 
 <body>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p>Do you want to play as Black or White?</p>
+            <button id="blackButton" onclick="blackButton()">Black</button>
+            <button id="whiteButton" onclick="whiteButton()">White</button>
+        </div>
+    </div>
     <div id="chessboard" class="chessboard">
         <div class="row">
-            <div class="square light"><div class="piece white-rook" onclick="moveRook(this)"></div></div>
-            <div class="square dark"><div class="piece white-knight" onclick="moveKnight(this)"></div></div>
-            <div class="square light"><div class="piece white-bishop" onclick="moveBishop(this)"></div></div>
-            <div class="square dark"><div class="piece white-king" onclick="moveKing(this)"></div></div>
-            <div class="square light"><div class="piece white-queen" onclick="moveQueen(this)"></div></div>
-            <div class="square dark"><div class="piece white-bishop" onclick="moveBishop(this)"></div></div>
-            <div class="square light"><div class="piece white-knight" onclick="moveKnight(this)"></div></div>
-            <div class="square dark"><div class="piece white-rook" onclick="moveRook(this)"></div></div>
+            <div class="square light">
+                <div class="piece white-rook" onclick="moveRook(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-knight" onclick="moveKnight(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-bishop" onclick="moveBishop(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-king" onclick="moveKing(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-queen" onclick="moveQueen(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-bishop" onclick="moveBishop(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-knight" onclick="moveKnight(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-rook" onclick="moveRook(this)"></div>
+            </div>
         </div>
         <div class="row">
-            <div class="square dark"><div class="piece white-pawn"></div></div>
-            <div class="square light"><div class="piece white-pawn"></div></div>
-            <div class="square dark"><div class="piece white-pawn"></div></div>
-            <div class="square light"><div class="piece white-pawn"></div></div>
-            <div class="square dark"><div class="piece white-pawn"></div></div>
-            <div class="square light"><div class="piece white-pawn"></div></div>
-            <div class="square dark"><div class="piece white-pawn"></div></div>
-            <div class="square light"><div class="piece white-pawn"></div></div>
+            <div class="square dark">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece white-pawn"></div>
+            </div>
+            <div class="square light">
+                <div class="piece white-pawn"></div>
+            </div>
         </div>
         <div class="row">
             <div class="square light"></div>
@@ -74,24 +113,56 @@
             <div class="square light"></div>
         </div>
         <div class="row">
-            <div class="square light"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square dark"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square light"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square dark"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square light"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square dark"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square light"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
-            <div class="square dark"><div class="piece black-pawn" onclick="movePawn(this)"></div></div>
+            <div class="square light">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-pawn" onclick="movePawn(this)"></div>
+            </div>
         </div>
         <div class="row">
-            <div class="square dark"><div class="piece black-rook" onclick="moveRook(this)"></div></div>
-            <div class="square light"><div class="piece black-knight" onclick="moveKnight(this)"></div></div>
-            <div class="square dark"><div class="piece black-bishop" onclick="moveBishop(this)"></div></div>
-            <div class="square light"><div class="piece black-king" onclick="moveKing(this)"></div></div>
-            <div class="square dark"><div class="piece black-queen" onclick="moveQueen(this)"></div></div>
-            <div class="square light"><div class="piece black-bishop" onclick="moveBishop(this)"></div></div>
-            <div class="square dark"><div class="piece black-knight" onclick="moveKnight(this)"></div></div>
-            <div class="square light"><div class="piece black-rook" onclick="moveRook(this)"></div></div>
+            <div class="square dark">
+                <div class="piece black-rook" onclick="moveRook(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-knight" onclick="moveKnight(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-bishop" onclick="moveBishop(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-king" onclick="moveKing(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-queen" onclick="moveQueen(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-bishop" onclick="moveBishop(this)"></div>
+            </div>
+            <div class="square dark">
+                <div class="piece black-knight" onclick="moveKnight(this)"></div>
+            </div>
+            <div class="square light">
+                <div class="piece black-rook" onclick="moveRook(this)"></div>
+            </div>
         </div>
     </div>
 </body>

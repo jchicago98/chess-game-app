@@ -1,4 +1,41 @@
 let previousPiece = null;
+let currentPlayerColor = null;
+
+function blackButton(){
+    currentPlayerColor = "black";
+    initializeChessboard();
+    closeModal();
+}
+
+function whiteButton(){
+    currentPlayerColor = "white";
+    initializeChessboard();
+    closeModal();
+}
+
+function initializeChessboard() {
+    if (currentPlayerColor === "white") {
+        document.querySelectorAll(".piece").forEach((piece) => {
+            console.log('PIECE', piece);
+            if (piece.classList.contains("white")) {
+                piece.classList.remove("white");
+                piece.classList.add("black");
+            }
+        });
+    }
+
+    document.getElementById("chessboard").style.display = "flex";
+}
+
+function closeModal() {
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+window.onload = function() {
+    const modal = document.getElementById("myModal");
+    modal.style.display = "block";
+};
 
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
