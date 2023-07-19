@@ -3,11 +3,6 @@ let previousPiece = null;
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
     let chessboard = document.getElementById("chessboard");
-    //console.log(clickedElement);
-    let rowIndex = getChessPieceRowIndex(clickedElement);
-    let colIndex = getChessPieceColumnIndex(clickedElement);
-    console.log(clickedElement.children[0]);
-
 
     if (!chessboard.contains(clickedElement)) {
         clearAllHints();
