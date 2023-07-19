@@ -51,7 +51,7 @@ function movePieceToHint(hintElement) {
 }
 
 function moveRook(rook) {
-    if(!rook.classList.contains('black-queen') && !rook.classList.contains('white-queen')){
+    if (!rook.classList.contains('black-queen') && !rook.classList.contains('white-queen') && !rook.classList.contains('black-king') && !rook.classList.contains('white-king')) {
         clearAllHints();
     }
     let currentPosition = rook.parentNode;
@@ -62,6 +62,9 @@ function moveRook(rook) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
         if (newSquareX.children.length === 0) {
             newSquareX.append(createHintElement());
+            if (rook.classList.contains('black-king') || rook.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -71,6 +74,9 @@ function moveRook(rook) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
         if (newSquareX.children.length === 0) {
             newSquareX.append(createHintElement());
+            if (rook.classList.contains('black-king') || rook.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -80,6 +86,9 @@ function moveRook(rook) {
         let newSquareY = currentPosition.parentNode.parentNode.children[rookY].children[colIndex];
         if (newSquareY.children.length === 0) {
             newSquareY.append(createHintElement());
+            if (rook.classList.contains('black-king') || rook.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -89,6 +98,9 @@ function moveRook(rook) {
         let newSquareY = currentPosition.parentNode.parentNode.children[rookY].children[colIndex];
         if (newSquareY.children.length === 0) {
             newSquareY.append(createHintElement());
+            if (rook.classList.contains('black-king') || rook.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -149,7 +161,7 @@ function moveKnight(knight) {
 }
 
 function moveBishop(bishop) {
-    if(!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen')){
+    if (!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen') && !bishop.classList.contains('black-king') && !bishop.classList.contains('white-king')) {
         clearAllHints();
     }
     let currentPosition = bishop.parentNode;
@@ -162,6 +174,9 @@ function moveBishop(bishop) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex - localCounter].children[bishopLeftUp];
         if (newSquareX.children.length === 0) {
             newSquareX.append(createHintElement());
+            if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -174,6 +189,9 @@ function moveBishop(bishop) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex + localCounter]?.children[bishopRightDown];
         if (newSquareX && newSquareX.children.length === 0) {
             newSquareX.append(createHintElement());
+            if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -186,6 +204,9 @@ function moveBishop(bishop) {
         let newSquare = currentPosition.parentNode.parentNode.children[rowIndex + localCounter]?.children[bishopLeftDown];
         if (newSquare && newSquare.children.length === 0) {
             newSquare.append(createHintElement());
+            if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -198,6 +219,9 @@ function moveBishop(bishop) {
         let newSquare = currentPosition.parentNode.parentNode.children[rowIndex - localCounter]?.children[bishopRightUp];
         if (newSquare && newSquare.children.length === 0) {
             newSquare.append(createHintElement());
+            if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
+                break;
+            }
         } else {
             break;
         }
@@ -206,12 +230,20 @@ function moveBishop(bishop) {
     previousPiece = bishop;
 }
 
-function moveQueen(queen){
+function moveQueen(queen) {
     clearAllHints();
     moveBishop(queen);
     moveRook(queen);
 
     previousPiece = queen;
+}
+
+function moveKing(king) {
+    clearAllHints();
+    moveBishop(king);
+    moveRook(king);
+
+    previousPiece = king;
 }
 
 
