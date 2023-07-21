@@ -108,12 +108,22 @@ function movePawn(pawn) {
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
-    let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
+    //let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
+    if (rowIndex == 6) {
+        direction = -1;
+    }
+    else if (rowIndex == 1) {
+        direction = 1;
+    }
     let newRow = rowIndex + direction;
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
 
-    if (rowIndex == 6 && pawn.classList.contains('black-pawn')) {
+    if (rowIndex == 6) {
         let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
+        newSquare_2.append(createHintElement());
+    }
+    else if (rowIndex == 1) {
+        let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
         newSquare_2.append(createHintElement());
     }
 
@@ -137,7 +147,6 @@ function movePieceToHint(hintElement) {
 
     previousPiece = piece;
     clearAllHints();
-    movePawn(piece);
 }
 
 function moveRook(rook) {
@@ -261,7 +270,8 @@ function moveBishop(bishop) {
 
     for (let bishopLeftUp = colIndex - 1; bishopLeftUp >= 0; bishopLeftUp--) {
         localCounter++;
-        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex - localCounter].children[bishopLeftUp];
+        let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex - localCounter]?.children[bishopLeftUp];
+        if (!newSquareX) break;
         if (newSquareX.children.length === 0) {
             newSquareX.append(createHintElement());
             if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
