@@ -1,13 +1,13 @@
 let previousPiece = null;
 let currentPlayerColor = null;
 
-function blackButton(){
+function blackButton() {
     currentPlayerColor = "black";
     initializeChessboard();
     closeModal();
 }
 
-function whiteButton(){
+function whiteButton() {
     currentPlayerColor = "white";
     initializeChessboard();
     closeModal();
@@ -15,13 +15,62 @@ function whiteButton(){
 
 function initializeChessboard() {
     if (currentPlayerColor === "white") {
+
         document.querySelectorAll(".piece").forEach((piece) => {
-            console.log('PIECE', piece);
-            if (piece.classList.contains("white")) {
-                piece.classList.remove("white");
-                piece.classList.add("black");
+            switch (piece.classList[1]) {
+                case "white-rook":
+                    piece.classList.remove("white-rook");
+                    piece.classList.add("black-rook");
+                    break;
+                case "white-knight":
+                    piece.classList.remove("white-knight");
+                    piece.classList.add("black-knight");
+                    break;
+                case "white-bishop":
+                    piece.classList.remove("white-bishop");
+                    piece.classList.add("black-bishop");
+                    break;
+                case "white-king":
+                    piece.classList.remove("white-king");
+                    piece.classList.add("black-queen");
+                    break;
+                case "white-queen":
+                    piece.classList.remove("white-queen");
+                    piece.classList.add("black-king");
+                    break;
+                case "white-pawn":
+                    piece.classList.remove("white-pawn");
+                    piece.classList.add("black-pawn");
+                    break;
+                case "black-rook":
+                    piece.classList.remove("black-rook");
+                    piece.classList.add("white-rook");
+                    break;
+                case "black-knight":
+                    piece.classList.remove("black-knight");
+                    piece.classList.add("white-knight");
+                    break;
+                case "black-bishop":
+                    piece.classList.remove("black-bishop");
+                    piece.classList.add("white-bishop");
+                    break;
+                case "black-king":
+                    piece.classList.remove("black-king");
+                    piece.classList.add("white-queen");
+                    break;
+                case "black-queen":
+                    piece.classList.remove("black-queen");
+                    piece.classList.add("white-king");
+                    break;
+                case "black-pawn":
+                    piece.classList.remove("black-pawn");
+                    piece.classList.add("white-pawn");
+                    break;
             }
+
         });
+
+
     }
 
     document.getElementById("chessboard").style.display = "flex";
@@ -32,7 +81,7 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-window.onload = function() {
+window.onload = function () {
     const modal = document.getElementById("myModal");
     modal.style.display = "block";
 };
