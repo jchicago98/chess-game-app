@@ -125,19 +125,19 @@ function movePawn(pawn) {
 }
 
 function movePieceToHint(hintElement) {
-    let pawn = previousPiece;
-    let currentPosition = pawn.parentNode;
-    let rowIndex = getChessPieceRowIndex(pawn);
-    let colIndex = getChessPieceColumnIndex(pawn);
-    let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
+    let piece = previousPiece;
+    let currentPosition = piece.parentNode;
+    let rowIndex = getChessPieceRowIndex(piece);
+    let colIndex = getChessPieceColumnIndex(piece);
+    let direction = (piece.classList.contains('black-pawn')) ? -1 : 0;
     let newRow = rowIndex + direction;
     let newSquare = hintElement.parentNode;
 
-    newSquare.appendChild(pawn);
+    newSquare.appendChild(piece);
 
-    previousPiece = pawn;
+    previousPiece = piece;
     clearAllHints();
-    movePawn(pawn);
+    movePawn(piece);
 }
 
 function moveRook(rook) {
