@@ -72,7 +72,7 @@ function initializeChessboard() {
 
 
     }
-
+    currentPlayerColor = "white";
     document.getElementById("chessboard").style.display = "flex";
 }
 
@@ -96,19 +96,30 @@ document.addEventListener("click", function (event) {
     else if (clickedElement.classList.contains("hint")) {
         movePieceToHint(clickedElement);
         clearAllHints();
+        switchPlayerColor();
     }
     else if (clickedElement.children[0]?.classList.contains("hint")) {
         movePieceToHint(clickedElement.children[0]);
         clearAllHints();
+        switchPlayerColor();
     }
 });
+
+function switchPlayerColor() {
+    if (currentPlayerColor === "white") {
+        currentPlayerColor = "black";
+    }
+    else if (currentPlayerColor === "black") {
+        currentPlayerColor = "white";
+    }
+}
 
 function movePawn(pawn) {
     clearAllHints();
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
-    //let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
+    
     if (rowIndex == 6) {
         direction = -1;
     }
@@ -119,16 +130,31 @@ function movePawn(pawn) {
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
 
     if (rowIndex == 6) {
-        let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
-        newSquare_2.append(createHintElement());
+        if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')) {
+            //DO NOTHING
+        }
+        else{
+            let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
+            newSquare_2.append(createHintElement());
+        }
+        
     }
     else if (rowIndex == 1) {
-        let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
-        newSquare_2.append(createHintElement());
+        if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')){
+            //DO NOTHING
+        }
+        else{
+            let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
+            newSquare_2.append(createHintElement());
+        }
+        
     }
 
     if (newSquare.children.length == 0) {
-        newSquare.append(createHintElement());
+        
+        if(pawn.classList.contains('white-pawn') && currentPlayerColor === 'white' || pawn.classList.contains('black-pawn') && currentPlayerColor === 'black'){ 
+            newSquare.append(createHintElement());
+        }
     }
 
     previousPiece = pawn;
@@ -136,11 +162,6 @@ function movePawn(pawn) {
 
 function movePieceToHint(hintElement) {
     let piece = previousPiece;
-    let currentPosition = piece.parentNode;
-    let rowIndex = getChessPieceRowIndex(piece);
-    let colIndex = getChessPieceColumnIndex(piece);
-    let direction = (piece.classList.contains('black-pawn')) ? -1 : 0;
-    let newRow = rowIndex + direction;
     let newSquare = hintElement.parentNode;
 
     newSquare.appendChild(piece);
