@@ -177,6 +177,13 @@ function moveRook(rook) {
     let currentPosition = rook.parentNode;
     let rowIndex = getChessPieceRowIndex(rook);
     let colIndex = getChessPieceColumnIndex(rook);
+    let isRookValid = false;
+
+    if((rook.classList.contains('white-rook') && currentPlayerColor === 'white') || (rook.classList.contains('black-rook') && currentPlayerColor === 'black') || (rook.classList.contains('white-king') && currentPlayerColor === 'white') || (rook.classList.contains('black-king') && currentPlayerColor === 'black') || (rook.classList.contains('white-queen') && currentPlayerColor === 'white') || (rook.classList.contains('black-queen') && currentPlayerColor === 'black')){
+        isRookValid = true;
+    }
+
+    if(isRookValid){
 
     for (let rookX = colIndex + 1; rookX < 8; rookX++) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
@@ -225,6 +232,8 @@ function moveRook(rook) {
             break;
         }
     }
+
+}
 
     previousPiece = rook;
 }
@@ -353,16 +362,26 @@ function moveBishop(bishop) {
 
 function moveQueen(queen) {
     clearAllHints();
-    moveBishop(queen);
-    moveRook(queen);
+    if(queen.classList.contains('black-king') || queen.classList.contains('white-king')){
+        moveKing(queen);
+    }
+    else if((queen.classList.contains('black-queen') && currentPlayerColor === 'black') || (queen.classList.contains('white-queen') && currentPlayerColor === 'white')){
+        moveBishop(queen);
+        moveRook(queen);
+    }
 
     previousPiece = queen;
 }
 
 function moveKing(king) {
     clearAllHints();
-    moveBishop(king);
-    moveRook(king);
+    if(king.classList.contains('black-queen') || king.classList.contains('white-queen')){
+        moveQueen(king);
+    }
+    else if((king.classList.contains('black-king') && currentPlayerColor === 'black') || (king.classList.contains('white-king') && currentPlayerColor === 'white')){
+        moveBishop(king);
+        moveRook(king);
+    }
 
     previousPiece = king;
 }
