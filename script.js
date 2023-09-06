@@ -1,5 +1,7 @@
 let previousPiece = null;
 let currentPlayerColor = null;
+let whitePawnPieceDirection = null;
+let blackPawnPieceDirection = null;
 
 function blackButton() {
     currentPlayerColor = "black";
@@ -72,7 +74,7 @@ function initializeChessboard() {
 
 
     }
-
+    currentPlayerColor = "white";
     document.getElementById("chessboard").style.display = "flex";
 }
 
@@ -96,39 +98,88 @@ document.addEventListener("click", function (event) {
     else if (clickedElement.classList.contains("hint")) {
         movePieceToHint(clickedElement);
         clearAllHints();
+        switchPlayerColor();
     }
     else if (clickedElement.children[0]?.classList.contains("hint")) {
         movePieceToHint(clickedElement.children[0]);
         clearAllHints();
+        switchPlayerColor();
     }
 });
+
+function switchPlayerColor() {
+    if (currentPlayerColor === "white") {
+        currentPlayerColor = "black";
+    }
+    else if (currentPlayerColor === "black") {
+        currentPlayerColor = "white";
+    }
+}
 
 function movePawn(pawn) {
     clearAllHints();
     let currentPosition = pawn.parentNode;
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
-    //let direction = (pawn.classList.contains('black-pawn')) ? -1 : 0;
+    
     if (rowIndex == 6) {
-        direction = -1;
+        if(currentPosition.children[0].classList.contains('white-pawn')){
+            whitePawnPieceDirection = -1;
+        }
+        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+            blackPawnPieceDirection = -1;
+        }
     }
     else if (rowIndex == 1) {
-        direction = 1;
+        if(currentPosition.children[0].classList.contains('white-pawn')){
+            whitePawnPieceDirection = 1;
+        }
+        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+            blackPawnPieceDirection = 1;
+        }
+
     }
+    if(currentPlayerColor === 'white') {
+        direction = whitePawnPieceDirection;
+    }
+    else if(currentPlayerColor === 'black') {
+        direction = blackPawnPieceDirection;
+    }
+
     let newRow = rowIndex + direction;
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
 
     if (rowIndex == 6) {
-        let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
-        newSquare_2.append(createHintElement());
+        if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')) {
+            //DO NOTHING
+        }
+        else{
+            let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
+            if(newSquare_2.children.length == 0 && newSquare.children.length == 0){
+                newSquare_2.append(createHintElement());
+            }
+            
+        }
+        
     }
     else if (rowIndex == 1) {
-        let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
-        newSquare_2.append(createHintElement());
+        if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')){
+            //DO NOTHING
+        }
+        else{
+            let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
+            if(newSquare_2.children.length == 0 && newSquare.children.length == 0) {
+                newSquare_2.append(createHintElement());
+            }
+        }
+        
     }
 
     if (newSquare.children.length == 0) {
-        newSquare.append(createHintElement());
+        
+        if(pawn.classList.contains('white-pawn') && currentPlayerColor === 'white' || pawn.classList.contains('black-pawn') && currentPlayerColor === 'black'){ 
+            newSquare.append(createHintElement());
+        }
     }
 
     previousPiece = pawn;
@@ -136,11 +187,6 @@ function movePawn(pawn) {
 
 function movePieceToHint(hintElement) {
     let piece = previousPiece;
-    let currentPosition = piece.parentNode;
-    let rowIndex = getChessPieceRowIndex(piece);
-    let colIndex = getChessPieceColumnIndex(piece);
-    let direction = (piece.classList.contains('black-pawn')) ? -1 : 0;
-    let newRow = rowIndex + direction;
     let newSquare = hintElement.parentNode;
 
     newSquare.appendChild(piece);
@@ -156,6 +202,13 @@ function moveRook(rook) {
     let currentPosition = rook.parentNode;
     let rowIndex = getChessPieceRowIndex(rook);
     let colIndex = getChessPieceColumnIndex(rook);
+    let isRookValid = false;
+
+    if((rook.classList.contains('white-rook') && currentPlayerColor === 'white') || (rook.classList.contains('black-rook') && currentPlayerColor === 'black') || (rook.classList.contains('white-king') && currentPlayerColor === 'white') || (rook.classList.contains('black-king') && currentPlayerColor === 'black') || (rook.classList.contains('white-queen') && currentPlayerColor === 'white') || (rook.classList.contains('black-queen') && currentPlayerColor === 'black')){
+        isRookValid = true;
+    }
+
+    if(isRookValid){
 
     for (let rookX = colIndex + 1; rookX < 8; rookX++) {
         let newSquareX = currentPosition.parentNode.parentNode.children[rowIndex].children[rookX];
@@ -205,6 +258,8 @@ function moveRook(rook) {
         }
     }
 
+}
+
     previousPiece = rook;
 }
 
@@ -222,6 +277,14 @@ function moveKnight(knight) {
     let bottomRightSquare_6 = (rowIndex + 2 < 8 && colIndex + 1 < 8) ? currentPosition.parentNode.parentNode.children[rowIndex + 2].children[colIndex + 1] : currentPosition;
     let bottomLeftSquare_7 = (rowIndex + 1 < 8 && colIndex - 2 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 1].children[colIndex - 2] : currentPosition;
     let bottomLeftSquare_8 = (rowIndex + 2 < 8 && colIndex - 1 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 2].children[colIndex - 1] : currentPosition;
+
+    let isKnightValid = false;
+
+    if((knight.classList.contains('black-knight') && currentPlayerColor === 'black') || (knight.classList.contains('white-knight') && currentPlayerColor === 'white')){
+        isKnightValid = true;
+    }
+
+    if(isKnightValid){
 
     if (topLeftSquare_1.children.length == 0) {
         topLeftSquare_1.append(createHintElement());
@@ -254,6 +317,7 @@ function moveKnight(knight) {
     if (bottomLeftSquare_8.children.length == 0) {
         bottomLeftSquare_8.append(createHintElement());
     }
+}
 
     previousPiece = knight;
 
@@ -267,6 +331,13 @@ function moveBishop(bishop) {
     let rowIndex = getChessPieceRowIndex(bishop);
     let colIndex = getChessPieceColumnIndex(bishop);
     let localCounter = 0;
+    let isBishopValid = false;
+
+    if((bishop.classList.contains('white-bishop') && currentPlayerColor === 'white') || (bishop.classList.contains('black-bishop') && currentPlayerColor === 'black') || (bishop.classList.contains('white-king') && currentPlayerColor === 'white') || (bishop.classList.contains('black-king') && currentPlayerColor === 'black') || (bishop.classList.contains('white-queen') && currentPlayerColor === 'white') || (bishop.classList.contains('black-queen') && currentPlayerColor === 'black')){
+        isBishopValid = true;
+    }
+
+    if(isBishopValid){
 
     for (let bishopLeftUp = colIndex - 1; bishopLeftUp >= 0; bishopLeftUp--) {
         localCounter++;
@@ -326,22 +397,33 @@ function moveBishop(bishop) {
             break;
         }
     }
+}
 
     previousPiece = bishop;
 }
 
 function moveQueen(queen) {
     clearAllHints();
-    moveBishop(queen);
-    moveRook(queen);
+    if(queen.classList.contains('black-king') || queen.classList.contains('white-king')){
+        moveKing(queen);
+    }
+    else if((queen.classList.contains('black-queen') && currentPlayerColor === 'black') || (queen.classList.contains('white-queen') && currentPlayerColor === 'white')){
+        moveBishop(queen);
+        moveRook(queen);
+    }
 
     previousPiece = queen;
 }
 
 function moveKing(king) {
     clearAllHints();
-    moveBishop(king);
-    moveRook(king);
+    if(king.classList.contains('black-queen') || king.classList.contains('white-queen')){
+        moveQueen(king);
+    }
+    else if((king.classList.contains('black-king') && currentPlayerColor === 'black') || (king.classList.contains('white-king') && currentPlayerColor === 'white')){
+        moveBishop(king);
+        moveRook(king);
+    }
 
     previousPiece = king;
 }
