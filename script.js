@@ -147,6 +147,7 @@ function movePawn(pawn) {
     }
 
     let newRow = rowIndex + direction;
+    checkPawnCapture(currentPosition, newRow, colIndex);
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
 
     if (rowIndex == 6) {
@@ -183,6 +184,18 @@ function movePawn(pawn) {
     }
 
     previousPiece = pawn;
+}
+
+function checkPawnCapture(currentSquare, newRow, colIndex) {
+    let newSquare_1 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex - 1];
+    let newSquare_2 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex + 1];
+    if(newSquare_1.children.length > 0){
+        newSquare_1.children[0].append(createCaptureHintElement());
+    }
+
+    if(newSquare_2.children.length > 0){
+        newSquare_2.children[0].append(createCaptureHintElement());
+    }
 }
 
 function movePieceToHint(hintElement) {
@@ -450,8 +463,29 @@ function createHintElement() {
     return hint;
 }
 
+function createCaptureHintElement(){
+    let captureHint = document.createElement("div");
+    captureHint.classList.add("capture-hint");
+    captureHint.style.border = "0.35rem solid rgba(0, 0, 0, 0.1)";
+    captureHint.style.width = "85%";
+    captureHint.style.height = "85%";
+    captureHint.style.borderRadius = "50%";
+    captureHint.style.boxSizing = "border-box";
+    captureHint.style.margin = "auto";
+    captureHint.style.display = "flex";
+    captureHint.style.justifyContent = "center";
+    captureHint.style.transform = "translateY(10%)";
+    return captureHint;
+}
+
 function clearAllHints() {
     let hints = document.getElementsByClassName("hint");
+    let captureHints = document.getElementsByClassName("capture-hint");
+    if(captureHints){
+        while (captureHints.length > 0) {
+            captureHints[0].remove();
+        }
+    }
     while (hints.length > 0) {
         hints[0].remove();
     }
