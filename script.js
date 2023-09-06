@@ -1,5 +1,7 @@
 let previousPiece = null;
 let currentPlayerColor = null;
+let whitePawnPieceDirection = null;
+let blackPawnPieceDirection = null;
 
 function blackButton() {
     currentPlayerColor = "black";
@@ -121,11 +123,29 @@ function movePawn(pawn) {
     let colIndex = getChessPieceColumnIndex(pawn);
     
     if (rowIndex == 6) {
-        direction = -1;
+        if(currentPosition.children[0].classList.contains('white-pawn')){
+            whitePawnPieceDirection = -1;
+        }
+        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+            blackPawnPieceDirection = -1;
+        }
     }
     else if (rowIndex == 1) {
-        direction = 1;
+        if(currentPosition.children[0].classList.contains('white-pawn')){
+            whitePawnPieceDirection = 1;
+        }
+        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+            blackPawnPieceDirection = 1;
+        }
+
     }
+    if(currentPlayerColor === 'white') {
+        direction = whitePawnPieceDirection;
+    }
+    else if(currentPlayerColor === 'black') {
+        direction = blackPawnPieceDirection;
+    }
+
     let newRow = rowIndex + direction;
     let newSquare = currentPosition.parentNode.parentNode.children[newRow].children[colIndex];
 
@@ -135,7 +155,10 @@ function movePawn(pawn) {
         }
         else{
             let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
-            newSquare_2.append(createHintElement());
+            if(newSquare_2.children.length == 0 && newSquare.children.length == 0){
+                newSquare_2.append(createHintElement());
+            }
+            
         }
         
     }
@@ -145,7 +168,9 @@ function movePawn(pawn) {
         }
         else{
             let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
-            newSquare_2.append(createHintElement());
+            if(newSquare_2.children.length == 0 && newSquare.children.length == 0) {
+                newSquare_2.append(createHintElement());
+            }
         }
         
     }
@@ -253,6 +278,14 @@ function moveKnight(knight) {
     let bottomLeftSquare_7 = (rowIndex + 1 < 8 && colIndex - 2 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 1].children[colIndex - 2] : currentPosition;
     let bottomLeftSquare_8 = (rowIndex + 2 < 8 && colIndex - 1 >= 0) ? currentPosition.parentNode.parentNode.children[rowIndex + 2].children[colIndex - 1] : currentPosition;
 
+    let isKnightValid = false;
+
+    if((knight.classList.contains('black-knight') && currentPlayerColor === 'black') || (knight.classList.contains('white-knight') && currentPlayerColor === 'white')){
+        isKnightValid = true;
+    }
+
+    if(isKnightValid){
+
     if (topLeftSquare_1.children.length == 0) {
         topLeftSquare_1.append(createHintElement());
     }
@@ -284,6 +317,7 @@ function moveKnight(knight) {
     if (bottomLeftSquare_8.children.length == 0) {
         bottomLeftSquare_8.append(createHintElement());
     }
+}
 
     previousPiece = knight;
 
@@ -297,6 +331,13 @@ function moveBishop(bishop) {
     let rowIndex = getChessPieceRowIndex(bishop);
     let colIndex = getChessPieceColumnIndex(bishop);
     let localCounter = 0;
+    let isBishopValid = false;
+
+    if((bishop.classList.contains('white-bishop') && currentPlayerColor === 'white') || (bishop.classList.contains('black-bishop') && currentPlayerColor === 'black') || (bishop.classList.contains('white-king') && currentPlayerColor === 'white') || (bishop.classList.contains('black-king') && currentPlayerColor === 'black') || (bishop.classList.contains('white-queen') && currentPlayerColor === 'white') || (bishop.classList.contains('black-queen') && currentPlayerColor === 'black')){
+        isBishopValid = true;
+    }
+
+    if(isBishopValid){
 
     for (let bishopLeftUp = colIndex - 1; bishopLeftUp >= 0; bishopLeftUp--) {
         localCounter++;
@@ -356,6 +397,7 @@ function moveBishop(bishop) {
             break;
         }
     }
+}
 
     previousPiece = bishop;
 }
