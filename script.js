@@ -152,7 +152,7 @@ function movePawn(pawn) {
 
     if (rowIndex == 6) {
         if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')) {
-            //DO NOTHING
+            void(0);
         }
         else{
             let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow - 1].children[colIndex];
@@ -165,7 +165,7 @@ function movePawn(pawn) {
     }
     else if (rowIndex == 1) {
         if((pawn.classList.contains('white-pawn') && currentPlayerColor === 'black') || (pawn.classList.contains('black-pawn') && currentPlayerColor === 'white')){
-            //DO NOTHING
+            void(0);
         }
         else{
             let newSquare_2 = currentPosition.parentNode.parentNode.children[newRow + 1].children[colIndex];
@@ -187,14 +187,33 @@ function movePawn(pawn) {
 }
 
 function checkPawnCapture(currentSquare, newRow, colIndex) {
+    let currentPieceTypeClicked = currentSquare.children[0].classList[1];
+    let colorOfCurrentPieceClicked = getColorOfPiece(currentPieceTypeClicked);
     let newSquare_1 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex - 1];
     let newSquare_2 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex + 1];
-    if(newSquare_1.children.length > 0){
-        newSquare_1.children[0].append(createCaptureHintElement());
+    
+    if(newSquare_1 == undefined){
+        void(0);
     }
 
-    if(newSquare_2.children.length > 0){
-        newSquare_2.children[0].append(createCaptureHintElement());
+    else if(newSquare_1.children.length > 0){
+        let pieceType = newSquare_1.children[0].classList[1];
+        if(getColorOfPiece(pieceType) != colorOfCurrentPieceClicked){
+            newSquare_1.children[0].append(createCaptureHintElement());
+        }
+        
+    }
+
+    if(newSquare_2 == undefined){
+        void(0);
+    }
+
+    else if(newSquare_2.children.length > 0){
+        let pieceType = newSquare_2.children[0].classList[1];
+        if(getColorOfPiece(pieceType) != colorOfCurrentPieceClicked) {
+            newSquare_2.children[0].append(createCaptureHintElement());
+        }
+        
     }
 }
 
@@ -439,6 +458,12 @@ function moveKing(king) {
     }
 
     previousPiece = king;
+}
+
+function getColorOfPiece(piece){
+    let parts = piece.split('-');
+    let colorOfPiece = parts[0];
+    return colorOfPiece;
 }
 
 
