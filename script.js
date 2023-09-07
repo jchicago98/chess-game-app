@@ -1,5 +1,6 @@
 let previousPiece = null;
 let currentPlayerColor = null;
+let currentPieceColorPicked = null;
 let whitePawnPieceDirection = null;
 let blackPawnPieceDirection = null;
 
@@ -187,8 +188,9 @@ function movePawn(pawn) {
 }
 
 function checkPawnCapture(currentSquare, newRow, colIndex) {
+    currentSquare.children[0].append(highlightPlayerSelection());
     let currentPieceTypeClicked = currentSquare.children[0].classList[1];
-    let colorOfCurrentPieceClicked = getColorOfPiece(currentPieceTypeClicked);
+    currentPieceColorPicked = getColorOfPiece(currentPieceTypeClicked);
     let newSquare_1 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex - 1];
     let newSquare_2 = currentSquare.parentNode.parentNode.children[newRow].children[colIndex + 1];
     
@@ -198,7 +200,7 @@ function checkPawnCapture(currentSquare, newRow, colIndex) {
 
     else if(newSquare_1.children.length > 0){
         let pieceType = newSquare_1.children[0].classList[1];
-        if(getColorOfPiece(pieceType) != colorOfCurrentPieceClicked){
+        if(getColorOfPiece(pieceType) != currentPieceColorPicked){
             newSquare_1.children[0].append(createCaptureHintElement());
         }
         
@@ -210,7 +212,7 @@ function checkPawnCapture(currentSquare, newRow, colIndex) {
 
     else if(newSquare_2.children.length > 0){
         let pieceType = newSquare_2.children[0].classList[1];
-        if(getColorOfPiece(pieceType) != colorOfCurrentPieceClicked) {
+        if(getColorOfPiece(pieceType) != currentPieceColorPicked) {
             newSquare_2.children[0].append(createCaptureHintElement());
         }
         
@@ -232,8 +234,12 @@ function moveRook(rook) {
         clearAllHints();
     }
     let currentPosition = rook.parentNode;
+    if(rook.classList.contains('white-rook') || rook.classList.contains('black-rook')) {
+        currentPosition.children[0].append(highlightPlayerSelection());
+    }
     let rowIndex = getChessPieceRowIndex(rook);
     let colIndex = getChessPieceColumnIndex(rook);
+    currentPieceColorPicked = getColorOfPiece(currentPosition.children[0].classList[1]);
     let isRookValid = false;
 
     if((rook.classList.contains('white-rook') && currentPlayerColor === 'white') || (rook.classList.contains('black-rook') && currentPlayerColor === 'black') || (rook.classList.contains('white-king') && currentPlayerColor === 'white') || (rook.classList.contains('black-king') && currentPlayerColor === 'black') || (rook.classList.contains('white-queen') && currentPlayerColor === 'white') || (rook.classList.contains('black-queen') && currentPlayerColor === 'black')){
@@ -250,6 +256,9 @@ function moveRook(rook) {
                 break;
             }
         } else {
+            if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
+                newSquareX.children[0].append(createCaptureHintElement());
+            }
             break;
         }
     }
@@ -262,6 +271,9 @@ function moveRook(rook) {
                 break;
             }
         } else {
+            if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
+                newSquareX.children[0].append(createCaptureHintElement());
+            }
             break;
         }
     }
@@ -274,6 +286,9 @@ function moveRook(rook) {
                 break;
             }
         } else {
+            if(getColorOfPiece(newSquareY.children[0].classList[1]) !== currentPieceColorPicked){
+                newSquareY.children[0].append(createCaptureHintElement());
+            }
             break;
         }
     }
@@ -286,6 +301,9 @@ function moveRook(rook) {
                 break;
             }
         } else {
+            if(getColorOfPiece(newSquareY.children[0].classList[1]) !== currentPieceColorPicked){
+                newSquareY.children[0].append(createCaptureHintElement());
+            }
             break;
         }
     }
@@ -298,6 +316,7 @@ function moveRook(rook) {
 function moveKnight(knight) {
     clearAllHints();
     let currentPosition = knight.parentNode;
+    currentPosition.children[0].append(highlightPlayerSelection());
     let rowIndex = getChessPieceRowIndex(knight);
     let colIndex = getChessPieceColumnIndex(knight);
 
@@ -360,6 +379,9 @@ function moveBishop(bishop) {
         clearAllHints();
     }
     let currentPosition = bishop.parentNode;
+    if(bishop.classList.contains('white-bishop') || bishop.classList.contains('black-bishop')){
+        currentPosition.children[0].append(highlightPlayerSelection());
+    }
     let rowIndex = getChessPieceRowIndex(bishop);
     let colIndex = getChessPieceColumnIndex(bishop);
     let localCounter = 0;
@@ -436,6 +458,8 @@ function moveBishop(bishop) {
 
 function moveQueen(queen) {
     clearAllHints();
+    let currentPosition = queen.parentNode;
+    currentPosition.children[0].append(highlightPlayerSelection());
     if(queen.classList.contains('black-king') || queen.classList.contains('white-king')){
         moveKing(queen);
     }
@@ -449,6 +473,8 @@ function moveQueen(queen) {
 
 function moveKing(king) {
     clearAllHints();
+    let currentPosition = king.parentNode;
+    currentPosition.children[0].append(highlightPlayerSelection());
     if(king.classList.contains('black-queen') || king.classList.contains('white-queen')){
         moveQueen(king);
     }
@@ -503,9 +529,20 @@ function createCaptureHintElement(){
     return captureHint;
 }
 
+function highlightPlayerSelection(){
+    let playerSelection = document.createElement("div");
+    playerSelection.classList.add("player-selection");
+    playerSelection.style.backgroundColor = "rgba(255, 255, 51, 0.4)";
+    playerSelection.style.display = "flex";
+    playerSelection.style.width = "100%";
+    playerSelection.style.height = "100%";
+    return playerSelection;
+}
+
 function clearAllHints() {
     let hints = document.getElementsByClassName("hint");
     let captureHints = document.getElementsByClassName("capture-hint");
+    let playerSelection = document.getElementsByClassName("player-selection");
     if(captureHints){
         while (captureHints.length > 0) {
             captureHints[0].remove();
@@ -513,5 +550,8 @@ function clearAllHints() {
     }
     while (hints.length > 0) {
         hints[0].remove();
+    }
+    while (playerSelection.length > 0) {
+        playerSelection[0].remove();
     }
 }
