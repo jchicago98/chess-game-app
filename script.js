@@ -317,6 +317,7 @@ function moveKnight(knight) {
     clearAllHints();
     let currentPosition = knight.parentNode;
     currentPosition.children[0].append(highlightPlayerSelection());
+    currentPieceColorPicked = getColorOfPiece(currentPosition.children[0].classList[1]);
     let rowIndex = getChessPieceRowIndex(knight);
     let colIndex = getChessPieceColumnIndex(knight);
 
@@ -341,33 +342,66 @@ function moveKnight(knight) {
         topLeftSquare_1.append(createHintElement());
     }
 
+    else if(topLeftSquare_1.children.length > 0 && getColorOfPiece(topLeftSquare_1.children[0].classList[1]) != currentPieceColorPicked){
+        topLeftSquare_1.children[0].append(createCaptureHintElement());
+    }
+
     if (topLeftSquare_2.children.length == 0) {
         topLeftSquare_2.append(createHintElement());
+    }
+
+    else if(topLeftSquare_2.children.length > 0 && getColorOfPiece(topLeftSquare_2.children[0].classList[1]) != currentPieceColorPicked){
+        topLeftSquare_2.children[0].append(createCaptureHintElement());
     }
 
     if (topRightSquare_3.children.length == 0) {
         topRightSquare_3.append(createHintElement());
     }
 
+    else if(topRightSquare_3.children.length > 0 && getColorOfPiece(topRightSquare_3.children[0].classList[1]) != currentPieceColorPicked){
+        topRightSquare_3.children[0].append(createCaptureHintElement());
+    }
+
     if (topRightSquare_4.children.length == 0) {
         topRightSquare_4.append(createHintElement());
+    }
+
+    else if(topRightSquare_4.children.length > 0 && getColorOfPiece(topRightSquare_4.children[0].classList[1]) != currentPieceColorPicked){
+        topRightSquare_4.children[0].append(createCaptureHintElement());
     }
 
     if (bottomRightSquare_5.children.length == 0) {
         bottomRightSquare_5.append(createHintElement());
     }
 
+    else if(bottomRightSquare_5.children.length > 0 && getColorOfPiece(bottomRightSquare_5.children[0].classList[1]) != currentPieceColorPicked){
+        bottomRightSquare_5.children[0].append(createCaptureHintElement());
+    }
+
     if (bottomRightSquare_6.children.length == 0) {
         bottomRightSquare_6.append(createHintElement());
+    }
+
+    else if(bottomRightSquare_6.children.length > 0 && getColorOfPiece(bottomRightSquare_6.children[0].classList[1]) != currentPieceColorPicked){
+        bottomRightSquare_6.children[0].append(createCaptureHintElement());
     }
 
     if (bottomLeftSquare_7.children.length == 0) {
         bottomLeftSquare_7.append(createHintElement());
     }
 
+    else if(bottomLeftSquare_7.children.length > 0 && getColorOfPiece(bottomLeftSquare_7.children[0].classList[1]) != currentPieceColorPicked){
+        bottomLeftSquare_7.children[0].append(createCaptureHintElement());
+    }
+
     if (bottomLeftSquare_8.children.length == 0) {
         bottomLeftSquare_8.append(createHintElement());
     }
+
+    else if(bottomLeftSquare_8.children.length > 0 && getColorOfPiece(bottomLeftSquare_8.children[0].classList[1]) != currentPieceColorPicked){
+        bottomLeftSquare_8.children[0].append(createCaptureHintElement());
+    }
+
 }
 
     previousPiece = knight;
