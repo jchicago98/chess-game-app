@@ -416,6 +416,7 @@ function moveBishop(bishop) {
     if(bishop.classList.contains('white-bishop') || bishop.classList.contains('black-bishop')){
         currentPosition.children[0].append(highlightPlayerSelection());
     }
+    currentPieceColorPicked = getColorOfPiece(currentPosition.children[0].classList[1]);
     let rowIndex = getChessPieceRowIndex(bishop);
     let colIndex = getChessPieceColumnIndex(bishop);
     let localCounter = 0;
@@ -437,6 +438,9 @@ function moveBishop(bishop) {
                 break;
             }
         } else {
+            if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
+                newSquareX.children[0].append(createCaptureHintElement());
+            }
             break;
         }
     }
@@ -451,7 +455,14 @@ function moveBishop(bishop) {
             if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
                 break;
             }
-        } else {
+        } 
+
+        else if((newSquareX && newSquareX.children.length > 0) && (getColorOfPiece(newSquareX.children[0].classList[1])!== currentPieceColorPicked)){
+            newSquareX.children[0].append(createCaptureHintElement());
+            break;
+        }
+        
+        else {
             break;
         }
     }
@@ -466,7 +477,14 @@ function moveBishop(bishop) {
             if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
                 break;
             }
-        } else {
+        } 
+        
+        else if((newSquare && newSquare.children.length > 0) && (getColorOfPiece(newSquare.children[0].classList[1])!== currentPieceColorPicked)){
+            newSquare.children[0].append(createCaptureHintElement());
+            break;
+        }
+
+        else {
             break;
         }
     }
@@ -481,7 +499,14 @@ function moveBishop(bishop) {
             if (bishop.classList.contains('black-king') || bishop.classList.contains('white-king')) {
                 break;
             }
-        } else {
+        } 
+        
+        else if((newSquare && newSquare.children.length > 0) && (getColorOfPiece(newSquare.children[0].classList[1])!== currentPieceColorPicked)){
+            newSquare.children[0].append(createCaptureHintElement());
+            break;
+        }
+        
+        else {
             break;
         }
     }
