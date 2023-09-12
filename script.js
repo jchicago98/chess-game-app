@@ -274,7 +274,13 @@ function checkPawnCapture(currentSquare, newRow, colIndex) {
 }
 
 function moveRook(rook) {
-    if (!rook.classList.contains('black-queen') && !rook.classList.contains('white-queen') && !rook.classList.contains('black-king') && !rook.classList.contains('white-king')) {
+    if(isCaptureHintValid){
+        if(previousPiece != rook && currentPlayerColor == getColorOfPiece(rook.classList[1])){
+            clearAllHints();
+            isCaptureHintValid = false;
+        }
+    }
+    if (!rook.classList.contains('black-queen') && !rook.classList.contains('white-queen') && !rook.classList.contains('black-king') && !rook.classList.contains('white-king') && !isCaptureHintValid) {
         clearAllHints();
     }
     let currentPosition = rook.parentNode;
@@ -302,6 +308,7 @@ function moveRook(rook) {
         } else {
             if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareX.children[0].append(createCaptureHintElement());
+                isCaptureHintValid = true;
             }
             break;
         }
@@ -317,6 +324,7 @@ function moveRook(rook) {
         } else {
             if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareX.children[0].append(createCaptureHintElement());
+                isCaptureHintValid = true;
             }
             break;
         }
@@ -332,6 +340,7 @@ function moveRook(rook) {
         } else {
             if(getColorOfPiece(newSquareY.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareY.children[0].append(createCaptureHintElement());
+                isCaptureHintValid = true;
             }
             break;
         }
@@ -347,6 +356,7 @@ function moveRook(rook) {
         } else {
             if(getColorOfPiece(newSquareY.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareY.children[0].append(createCaptureHintElement());
+                isCaptureHintValid = true;
             }
             break;
         }
@@ -354,7 +364,18 @@ function moveRook(rook) {
 
 }
 
+if(!isCaptureHintValid){
     previousPiece = rook;
+}
+else if(isCaptureHintValid){
+    let currentRookColor = getColorOfPiece(rook.classList[1]);
+    if(currentRookColor == currentPlayerColor){
+        previousPiece = rook;
+    }
+    else{
+        void(0);
+    }
+}
 }
 
 function moveKnight(knight) {
@@ -486,7 +507,7 @@ function moveBishop(bishop) {
             isCaptureHintValid = false;
         }
     }
-    
+
     if (!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen') && !bishop.classList.contains('black-king') && !bishop.classList.contains('white-king') && !isCaptureHintValid) {
         clearAllHints();
     }
