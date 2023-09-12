@@ -630,7 +630,15 @@ else if(isCaptureHintValid){
 }
 
 function moveQueen(queen) {
-    clearAllHints();
+    if(!isCaptureHintValid){
+        clearAllHints();
+    }
+    else if(isCaptureHintValid){
+        if(previousPiece != queen && currentPlayerColor == getColorOfPiece(queen.classList[1])){
+            clearAllHints();
+            isCaptureHintValid = false;
+        }
+    }
     let currentPosition = queen.parentNode;
     currentPosition.children[0].append(highlightPlayerSelection());
     if(queen.classList.contains('black-king') || queen.classList.contains('white-king')){
@@ -641,11 +649,30 @@ function moveQueen(queen) {
         moveRook(queen);
     }
 
-    previousPiece = queen;
+    if(!isCaptureHintValid){
+        previousPiece = queen;
+    }
+    else if(isCaptureHintValid){
+        let currentQueenColor = getColorOfPiece(queen.classList[1]);
+        if(currentQueenColor == currentPlayerColor){
+            previousPiece = queen;
+        }
+        else{
+            void(0);
+        }
+    }
 }
 
 function moveKing(king) {
-    clearAllHints();
+    if(!isCaptureHintValid){
+        clearAllHints();
+    }
+    else if(isCaptureHintValid){
+        if(previousPiece != king && currentPlayerColor == getColorOfPiece(king.classList[1])){
+            clearAllHints();
+            isCaptureHintValid = false;
+        }
+    }
     let currentPosition = king.parentNode;
     currentPosition.children[0].append(highlightPlayerSelection());
     if(king.classList.contains('black-queen') || king.classList.contains('white-queen')){
@@ -656,7 +683,18 @@ function moveKing(king) {
         moveRook(king);
     }
 
-    previousPiece = king;
+    if(!isCaptureHintValid){
+        previousPiece = king;
+    }
+    else if(isCaptureHintValid){
+        let currentKingColor = getColorOfPiece(king.classList[1]);
+        if(currentKingColor == currentPlayerColor){
+            previousPiece = king;
+        }
+        else{
+            void(0);
+        }
+    }
 }
 
 function getColorOfPiece(piece){
