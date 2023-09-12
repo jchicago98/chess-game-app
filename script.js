@@ -398,6 +398,7 @@ function moveKnight(knight) {
 
     else if(topLeftSquare_1.children.length > 0 && getColorOfPiece(topLeftSquare_1.children[0].classList[1]) != currentPieceColorPicked){
         topLeftSquare_1.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (topLeftSquare_2.children.length == 0) {
@@ -406,6 +407,7 @@ function moveKnight(knight) {
 
     else if(topLeftSquare_2.children.length > 0 && getColorOfPiece(topLeftSquare_2.children[0].classList[1]) != currentPieceColorPicked){
         topLeftSquare_2.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (topRightSquare_3.children.length == 0) {
@@ -414,6 +416,7 @@ function moveKnight(knight) {
 
     else if(topRightSquare_3.children.length > 0 && getColorOfPiece(topRightSquare_3.children[0].classList[1]) != currentPieceColorPicked){
         topRightSquare_3.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (topRightSquare_4.children.length == 0) {
@@ -422,6 +425,7 @@ function moveKnight(knight) {
 
     else if(topRightSquare_4.children.length > 0 && getColorOfPiece(topRightSquare_4.children[0].classList[1]) != currentPieceColorPicked){
         topRightSquare_4.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (bottomRightSquare_5.children.length == 0) {
@@ -430,6 +434,7 @@ function moveKnight(knight) {
 
     else if(bottomRightSquare_5.children.length > 0 && getColorOfPiece(bottomRightSquare_5.children[0].classList[1]) != currentPieceColorPicked){
         bottomRightSquare_5.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (bottomRightSquare_6.children.length == 0) {
@@ -438,6 +443,7 @@ function moveKnight(knight) {
 
     else if(bottomRightSquare_6.children.length > 0 && getColorOfPiece(bottomRightSquare_6.children[0].classList[1]) != currentPieceColorPicked){
         bottomRightSquare_6.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (bottomLeftSquare_7.children.length == 0) {
@@ -446,6 +452,7 @@ function moveKnight(knight) {
 
     else if(bottomLeftSquare_7.children.length > 0 && getColorOfPiece(bottomLeftSquare_7.children[0].classList[1]) != currentPieceColorPicked){
         bottomLeftSquare_7.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
     if (bottomLeftSquare_8.children.length == 0) {
@@ -454,6 +461,7 @@ function moveKnight(knight) {
 
     else if(bottomLeftSquare_8.children.length > 0 && getColorOfPiece(bottomLeftSquare_8.children[0].classList[1]) != currentPieceColorPicked){
         bottomLeftSquare_8.children[0].append(createCaptureHintElement());
+        isCaptureHintValid = true;
     }
 
 }
