@@ -480,7 +480,14 @@ else if(isCaptureHintValid){
 }
 
 function moveBishop(bishop) {
-    if (!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen') && !bishop.classList.contains('black-king') && !bishop.classList.contains('white-king')) {
+    if(isCaptureHintValid){
+        if(previousPiece != bishop && currentPlayerColor == getColorOfPiece(bishop.classList[1])){
+            clearAllHints();
+            isCaptureHintValid = false;
+        }
+    }
+    
+    if (!bishop.classList.contains('black-queen') && !bishop.classList.contains('white-queen') && !bishop.classList.contains('black-king') && !bishop.classList.contains('white-king') && !isCaptureHintValid) {
         clearAllHints();
     }
     let currentPosition = bishop.parentNode;
@@ -511,6 +518,7 @@ function moveBishop(bishop) {
         } else {
             if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareX.children[0].append(createCaptureHintElement());
+                isCaptureHintValid = true;
             }
             break;
         }
@@ -530,6 +538,7 @@ function moveBishop(bishop) {
 
         else if((newSquareX && newSquareX.children.length > 0) && (getColorOfPiece(newSquareX.children[0].classList[1])!== currentPieceColorPicked)){
             newSquareX.children[0].append(createCaptureHintElement());
+            isCaptureHintValid = true;
             break;
         }
         
@@ -552,6 +561,7 @@ function moveBishop(bishop) {
         
         else if((newSquare && newSquare.children.length > 0) && (getColorOfPiece(newSquare.children[0].classList[1])!== currentPieceColorPicked)){
             newSquare.children[0].append(createCaptureHintElement());
+            isCaptureHintValid = true;
             break;
         }
 
@@ -574,6 +584,7 @@ function moveBishop(bishop) {
         
         else if((newSquare && newSquare.children.length > 0) && (getColorOfPiece(newSquare.children[0].classList[1])!== currentPieceColorPicked)){
             newSquare.children[0].append(createCaptureHintElement());
+            isCaptureHintValid = true;
             break;
         }
         
@@ -583,7 +594,18 @@ function moveBishop(bishop) {
     }
 }
 
+if(!isCaptureHintValid){
     previousPiece = bishop;
+}
+else if(isCaptureHintValid){
+    let currentBishopColor = getColorOfPiece(bishop.classList[1]);
+    if(currentBishopColor == currentPlayerColor){
+        previousPiece = bishop;
+    }
+    else{
+        void(0);
+    }
+}
 }
 
 function moveQueen(queen) {
