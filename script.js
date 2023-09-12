@@ -160,20 +160,19 @@ function movePawn(pawn) {
     let rowIndex = getChessPieceRowIndex(pawn);
     let colIndex = getChessPieceColumnIndex(pawn);
     
-    //BUG HERE: NEED TO FIX THIS LATER
     if (rowIndex == 6) {
-        if(currentPosition.children[0].classList.contains('white-pawn')){
+        if(currentPosition.children[0].classList.contains('white-pawn') && whitePawnPieceDirection != 1){
             whitePawnPieceDirection = -1;
         }
-        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+        else if(currentPosition.children[0].classList.contains('black-pawn') && blackPawnPieceDirection != 1) {
             blackPawnPieceDirection = -1;
         }
     }
     else if (rowIndex == 1) {
-        if(currentPosition.children[0].classList.contains('white-pawn')){
+        if(currentPosition.children[0].classList.contains('white-pawn') && whitePawnPieceDirection != -1) {
             whitePawnPieceDirection = 1;
         }
-        else if(currentPosition.children[0].classList.contains('black-pawn')) {
+        else if(currentPosition.children[0].classList.contains('black-pawn') && blackPawnPieceDirection!= -1) {
             blackPawnPieceDirection = 1;
         }
 
@@ -251,8 +250,7 @@ function checkPawnCapture(currentSquare, newRow, colIndex) {
         void(0);
     }
 
-    else if(newSquare_1.children.length > 0 && newSquare_1.children[0].children.length == 0){
-        //console.log(newSquare_1.children[0].children.length);
+    else if((newSquare_1.children.length > 0 && newSquare_1.children[0].children.length == 0) && (currentPieceColorPicked == currentPlayerColor)){
         let pieceType = newSquare_1.children[0].classList[1];
         if(getColorOfPiece(pieceType) != currentPieceColorPicked){
             newSquare_1.children[0].append(createCaptureHintElement());
@@ -265,7 +263,7 @@ function checkPawnCapture(currentSquare, newRow, colIndex) {
         void(0);
     }
 
-    else if(newSquare_2.children.length > 0 && newSquare_2.children[0].children.length == 0){
+    else if((newSquare_2.children.length > 0 && newSquare_2.children[0].children.length == 0) && (currentPieceColorPicked == currentPlayerColor)){
         let pieceType = newSquare_2.children[0].classList[1];
         if(getColorOfPiece(pieceType) != currentPieceColorPicked) {
             newSquare_2.children[0].append(createCaptureHintElement());
