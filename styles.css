@@ -173,3 +173,11 @@ img {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+#captured-pieces-player-one{
+    display: flex;
+}
+
+#captured-pieces-player-two{
+    display: flex;
+}

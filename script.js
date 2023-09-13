@@ -1,4 +1,6 @@
 let previousPiece = null;
+let playerOneColor = null;
+let playerTwoColor = null;
 let currentPlayerColor = null;
 let currentPieceColorPicked = null;
 let whitePawnPieceDirection = null;
@@ -20,7 +22,8 @@ function whiteButton() {
 
 function initializeChessboard() {
     if (currentPlayerColor === "white") {
-
+        playerTwoColor = "white";
+        playerOneColor = "black";
         document.querySelectorAll(".piece").forEach((piece) => {
             switch (piece.classList[1]) {
                 case "white-rook":
@@ -77,6 +80,10 @@ function initializeChessboard() {
 
 
     }
+    else if (currentPlayerColor === "black") {
+        playerTwoColor = "black";
+        playerOneColor = "white";
+    }
     currentPlayerColor = "white";
     document.getElementById("chessboard").style.display = "flex";
 }
@@ -122,7 +129,8 @@ function movePieceToHint(hintElement) {
 
     if(hintElement.classList.contains("capture-hint")){
         newSquare = newSquare.parentNode;
-        newSquare.children[0].remove();
+        addCapturedPiece(hintElement.parentNode);
+        //newSquare.children[0].remove();
         newSquare.appendChild(piece);
         isCaptureHintValid = false;
     }
@@ -134,6 +142,19 @@ function movePieceToHint(hintElement) {
 
     previousPiece = piece;
     clearAllHints();
+}
+
+function addCapturedPiece(capturedPiece){
+    let playerOne = document.getElementById("captured-pieces-player-one");
+    let playerTwo = document.getElementById("captured-pieces-player-two");
+    capturedPiece.classList.remove("piece");
+    capturedPiece.classList.add("pieces-captured");
+    if(currentPlayerColor === playerOneColor){
+        playerOne.append(capturedPiece);
+    }
+    else if(currentPlayerColor === playerTwoColor){
+        playerTwo.append(capturedPiece);
+    }
 }
 
 function switchPlayerColor() {
