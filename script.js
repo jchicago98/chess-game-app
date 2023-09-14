@@ -132,11 +132,13 @@ function movePieceToHint(hintElement) {
         addCapturedPiece(hintElement.parentNode);
         //newSquare.children[0].remove();
         newSquare.appendChild(piece);
+        playCaptureSound();
         isCaptureHintValid = false;
     }
 
     else{
-       newSquare.appendChild(piece); 
+       newSquare.appendChild(piece);
+       playMoveSelfSound(); 
     }
     
 
@@ -716,6 +718,18 @@ function moveKing(king) {
             void(0);
         }
     }
+}
+
+function playMoveSelfSound(){
+    let moveAudio = new Audio('http://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3');
+    moveAudio.play();
+    return;
+}
+
+function playCaptureSound(){
+    let captureAudio = new Audio('http://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3');
+    captureAudio.play();
+    return;
 }
 
 function getColorOfPiece(piece){
