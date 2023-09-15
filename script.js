@@ -5,7 +5,10 @@ let currentPlayerColor = null;
 let currentPieceColorPicked = null;
 let whitePawnPieceDirection = null;
 let blackPawnPieceDirection = null;
-let pawnMovementActive = null;
+let hasBlackKingMoved = null;
+let hasWhiteKingMoved = null;
+let hasBlackKingCastled = null;
+let hasWhiteKingCastled = null;
 let isCaptureHintValid = null;
 
 function blackButton() {
@@ -134,11 +137,23 @@ function movePieceToHint(hintElement) {
         newSquare.appendChild(piece);
         playCaptureSound();
         isCaptureHintValid = false;
+        if(piece.classList.contains("white-king")){
+            hasWhiteKingMoved = true;
+        }
+        else if(piece.classList.contains("black-king")){
+            hasBlackKingMoved = true;
+        }
     }
 
     else{
        newSquare.appendChild(piece);
-       playMoveSelfSound(); 
+       playMoveSelfSound();
+       if(piece.classList.contains("white-king")){
+        hasWhiteKingMoved = true;
+    }
+    else if(piece.classList.contains("black-king")){
+        hasBlackKingMoved = true;
+    } 
     }
     
 
@@ -560,6 +575,9 @@ function moveBishop(bishop) {
                 break;
             }
         } else {
+            //BUG HERE: Problem is that while it detects if there is a color match or not,
+            //if there is a hint in the new square, it also passes the hint to the getColorOfPiece function.
+            //Please fix bug so that it only looks at pieces and not the hints.
             if(getColorOfPiece(newSquareX.children[0].classList[1]) !== currentPieceColorPicked){
                 newSquareX.children[0].append(createCaptureHintElement());
                 isCaptureHintValid = true;
@@ -702,8 +720,15 @@ function moveKing(king) {
         moveQueen(king);
     }
     else if((king.classList.contains('black-king') && currentPlayerColor === 'black') || (king.classList.contains('white-king') && currentPlayerColor === 'white')){
-        moveBishop(king);
-        moveRook(king);
+        let kingCastleStatus = false;
+        if(previousPiece){
+            kingCastleStatus = checkCastle(king);  
+        }
+        if(!kingCastleStatus){
+            moveBishop(king);
+            moveRook(king);
+        }
+        
     }
 
     if(!isCaptureHintValid){
@@ -720,6 +745,130 @@ function moveKing(king) {
     }
 }
 
+function checkCastle(piece) {
+
+    let rowIndex = getChessPieceRowIndex(piece);
+    let colIndex = getChessPieceColumnIndex(piece);
+    let currentPosition = piece.parentNode;
+    let squareWithBishop = null;
+    let squareWithKnight = null;
+    let squareWithQueen = null;
+    //PLAYER TWO - BOTTOM ROW
+    if(getChessPieceRowIndex(previousPiece) == 7){
+        if(getChessPieceColumnIndex(previousPiece) == 0 && playerTwoColor == 'white'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 2];
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 3]; 
+        squareWithQueen = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 1];
+    }
+    
+    else if(getChessPieceColumnIndex(previousPiece) == 7 && playerTwoColor == 'white'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 1]; 
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 2]; 
+    }
+
+    else if(getChessPieceColumnIndex(previousPiece) == 0 && playerTwoColor == 'black'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 1]; 
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 2]; 
+    }
+
+    else if(getChessPieceColumnIndex(previousPiece) == 7 && playerTwoColor == 'black'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 2];
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 3]; 
+        squareWithQueen = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 1];
+    }
+    }
+
+    //PLAYER ONE - TOP ROW
+    else if(getChessPieceRowIndex(previousPiece) == 0){
+        if(getChessPieceColumnIndex(previousPiece) == 0 && playerOneColor == 'white'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 1];
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 2];
+    }
+    
+    else if(getChessPieceColumnIndex(previousPiece) == 7 && playerOneColor == 'white'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 2]; 
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 3];
+        squareWithQueen = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 1]; 
+    }
+
+    else if(getChessPieceColumnIndex(previousPiece) == 0 && playerOneColor == 'black'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 2];
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 3]; 
+        squareWithQueen = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex - 1]; 
+    }
+
+    else if(getChessPieceColumnIndex(previousPiece) == 7 && playerOneColor == 'black'){
+        squareWithBishop = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 1];
+        squareWithKnight = currentPosition.parentNode.parentNode.children[rowIndex].children[colIndex + 2];
+    }
+    }
+    
+    
+    
+    if(previousPiece.classList.contains('white-rook') && piece.classList.contains('white-king') && !hasWhiteKingCastled){    //KING SIDE
+        if(getChessPieceColumnIndex(previousPiece) == 7){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0){
+                squareWithBishop.append(previousPiece);
+                squareWithKnight.append(piece);
+                hasWhiteKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+        }
+        else{
+                console.log('Castle king side INVALID!');
+        }
+        }
+        else if(getChessPieceColumnIndex(previousPiece) == 0){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0){
+                squareWithBishop.append(piece);
+                squareWithQueen.append(previousPiece);
+                hasWhiteKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+            }
+            else{
+                console.log('Castle queen side INVALID!');
+            }
+        }
+        
+    }
+    else if(previousPiece.classList.contains('black-rook') && piece.classList.contains('black-king')){
+        if(getChessPieceColumnIndex(previousPiece) == 7){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0){
+                squareWithBishop.append(previousPiece);
+                squareWithKnight.append(piece);
+                hasBlackKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+        }
+        else{
+                console.log('Castle king side INVALID!');
+        }
+        }
+        else if(getChessPieceColumnIndex(previousPiece) == 0){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0){
+                squareWithBishop.append(piece);
+                squareWithQueen.append(previousPiece);
+                hasBlackKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+            }
+            else{
+                console.log('Castle queen side INVALID!');
+            }
+        }
+    }
+    return;
+}
+
+function castleKing(){
+    
+}
+
 function playMoveSelfSound(){
     let moveAudio = new Audio('http://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3');
     moveAudio.play();
@@ -729,6 +878,12 @@ function playMoveSelfSound(){
 function playCaptureSound(){
     let captureAudio = new Audio('http://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3');
     captureAudio.play();
+    return;
+}
+
+function playCastleSound(){
+    let castleAudio = new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/castle.mp3');
+    castleAudio.play();
     return;
 }
 
