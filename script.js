@@ -5,8 +5,6 @@ let currentPlayerColor = null;
 let currentPieceColorPicked = null;
 let whitePawnPieceDirection = null;
 let blackPawnPieceDirection = null;
-let hasBlackKingMoved = null;
-let hasWhiteKingMoved = null;
 let hasBlackKingCastled = null;
 let hasWhiteKingCastled = null;
 let isCaptureHintValid = null;
@@ -138,10 +136,10 @@ function movePieceToHint(hintElement) {
         playCaptureSound();
         isCaptureHintValid = false;
         if(piece.classList.contains("white-king")){
-            hasWhiteKingMoved = true;
+            hasWhiteKingCastled = true;
         }
         else if(piece.classList.contains("black-king")){
-            hasBlackKingMoved = true;
+            hasBlackKingCastled = true;
         }
     }
 
@@ -149,10 +147,10 @@ function movePieceToHint(hintElement) {
        newSquare.appendChild(piece);
        playMoveSelfSound();
        if(piece.classList.contains("white-king")){
-        hasWhiteKingMoved = true;
+        hasWhiteKingCastled = true;
     }
     else if(piece.classList.contains("black-king")){
-        hasBlackKingMoved = true;
+        hasBlackKingCastled = true;
     } 
     }
     
@@ -805,9 +803,9 @@ function checkCastle(piece) {
     
     
     
-    if(previousPiece.classList.contains('white-rook') && piece.classList.contains('white-king') && !hasWhiteKingCastled){    //KING SIDE
+    if(previousPiece.classList.contains('white-rook') && piece.classList.contains('white-king') && !hasWhiteKingCastled){
         if(getChessPieceColumnIndex(previousPiece) == 7){
-            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 7){
                 squareWithBishop.append(previousPiece);
                 squareWithKnight.append(piece);
                 hasWhiteKingCastled = true;
@@ -815,12 +813,28 @@ function checkCastle(piece) {
                 playCastleSound();
                 return true;
         }
+        else if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0 && getChessPieceRowIndex(previousPiece) == 0){
+            squareWithBishop.append(piece);
+            squareWithQueen.append(previousPiece);
+            hasWhiteKingCastled = true;
+            switchPlayerColor();
+            playCastleSound();
+            return true;
+        }
         else{
                 console.log('Castle king side INVALID!');
         }
         }
         else if(getChessPieceColumnIndex(previousPiece) == 0){
-            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 0){
+                squareWithBishop.append(previousPiece);
+                squareWithKnight.append(piece);
+                hasWhiteKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+            }
+            else if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0 && getChessPieceRowIndex(previousPiece) == 7){
                 squareWithBishop.append(piece);
                 squareWithQueen.append(previousPiece);
                 hasWhiteKingCastled = true;
@@ -834,22 +848,42 @@ function checkCastle(piece) {
         }
         
     }
-    else if(previousPiece.classList.contains('black-rook') && piece.classList.contains('black-king')){
+
+
+
+
+    else if(previousPiece.classList.contains('black-rook') && piece.classList.contains('black-king') && !hasBlackKingCastled){
         if(getChessPieceColumnIndex(previousPiece) == 7){
-            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0){
-                squareWithBishop.append(previousPiece);
-                squareWithKnight.append(piece);
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 7 && squareWithQueen.children.length == 0){
+                squareWithQueen.append(previousPiece);
+                squareWithBishop.append(piece);
                 hasBlackKingCastled = true;
                 switchPlayerColor();
                 playCastleSound();
                 return true;
+        }
+        else if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 0){
+            squareWithBishop.append(previousPiece);
+            squareWithKnight.append(piece);
+            hasBlackKingCastled = true;
+            switchPlayerColor();
+            playCastleSound();
+            return true;
         }
         else{
                 console.log('Castle king side INVALID!');
         }
         }
         else if(getChessPieceColumnIndex(previousPiece) == 0){
-            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && squareWithQueen.children.length == 0){
+            if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 7){
+                squareWithBishop.append(previousPiece);
+                squareWithKnight.append(piece);
+                hasBlackKingCastled = true;
+                switchPlayerColor();
+                playCastleSound();
+                return true;
+            }
+            else if(squareWithBishop.children.length == 0 && squareWithKnight.children.length == 0 && getChessPieceRowIndex(previousPiece) == 0 && squareWithQueen.children.length == 0){
                 squareWithBishop.append(piece);
                 squareWithQueen.append(previousPiece);
                 hasBlackKingCastled = true;
@@ -863,10 +897,6 @@ function checkCastle(piece) {
         }
     }
     return;
-}
-
-function castleKing(){
-    
 }
 
 function playMoveSelfSound(){
