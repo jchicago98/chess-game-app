@@ -121,6 +121,7 @@ document.addEventListener("click", function (event) {
         switchPlayerColor();
         updateDangerSquares();
         switchPlayerColor();
+        isKingInCheck();
     }
     else if (!chessboard.contains(clickedElement)) {
         clearAllHints();
@@ -130,12 +131,14 @@ document.addEventListener("click", function (event) {
         updateDangerSquares();
         clearAllHints();
         switchPlayerColor();
+        isKingInCheck();
     }
     else if (clickedElement.children[0]?.classList.contains("hint")) {
         movePieceToHint(clickedElement.children[0]);
         updateDangerSquares();
         clearAllHints();
         switchPlayerColor();
+        isKingInCheck();
     }
     
 });
@@ -1172,10 +1175,20 @@ function updateDangerSquares(){
 function checkHintsFromPieceClick(){
     let arrayOfDangerSquares = [];
     let hints = document.getElementsByClassName("hint");
+    let captureHints = document.getElementsByClassName("capture-hint");
     if(hints.length > 0){
         let hintsArray = Array.from(hints);
         hintsArray.forEach((hint) => {
             arrayOfDangerSquares.push(hint.parentNode);
+        });
+    }
+    if(captureHints.length > 0){
+        let captureHintsArray = Array.from(captureHints);
+        captureHintsArray.forEach((captureHint) => {
+            let captureHintSquare = captureHint.parentNode;
+            if(captureHintSquare.classList.contains("white-king") || captureHintSquare.classList.contains("black-king")){
+                arrayOfDangerSquares.push(captureHintSquare);
+            }
         });
     }
     return arrayOfDangerSquares;
@@ -1196,6 +1209,23 @@ function preventKingFromEnteringDangerSquares(king){
         let hintSquare = hint.parentNode;
         if(dangerSquares.includes(hintSquare)){
             hint.remove();
+        }
+    });
+}
+
+function isKingInCheck(){
+    updateDangerSquares();
+    let whiteKingDangerSquares = mapOfDangerSquaresForKings.get("danger-squares-white-king");
+    let blackKingDangerSquares = mapOfDangerSquaresForKings.get("danger-squares-black-king");
+    whiteKingDangerSquares.forEach((square) => {
+        if(square.classList.contains("white-king")){
+            console.log("White king is in check");
+        }
+    });
+
+    blackKingDangerSquares.forEach((square) => {
+        if(square.classList.contains("black-king")){
+            console.log("Black king is in check");
         }
     });
 }
