@@ -109,6 +109,9 @@ window.onload = function () {
 document.addEventListener("click", function (event) {
     let clickedElement = event.target;
     let chessboard = document.getElementById("chessboard");
+    if(clickedElement.classList.contains("white-king") || clickedElement.classList.contains("black-king")){
+        preventKingFromEnteringDangerSquares(clickedElement);
+    }
 
     if(clickedElement.classList.contains("capture-hint")){
         movePieceToHint(clickedElement);
@@ -1176,4 +1179,23 @@ function checkHintsFromPieceClick(){
         });
     }
     return arrayOfDangerSquares;
+}
+
+function preventKingFromEnteringDangerSquares(king){
+    let hints = document.getElementsByClassName("hint");
+    let hintsArray = Array.from(hints);
+    let dangerSquares = [];
+    if(king.classList.contains("white-king")){
+        dangerSquares = mapOfDangerSquaresForKings.get("danger-squares-white-king");
+    }
+    else if(king.classList.contains("black-king")){
+        dangerSquares = mapOfDangerSquaresForKings.get("danger-squares-black-king");
+    }
+    
+    hintsArray.forEach((hint)=>{
+        let hintSquare = hint.parentNode;
+        if(dangerSquares.includes(hintSquare)){
+            hint.remove();
+        }
+    });
 }
