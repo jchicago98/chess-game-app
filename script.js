@@ -8,6 +8,10 @@ let blackPawnPieceDirection = null;
 let hasBlackKingCastled = null;
 let hasWhiteKingCastled = null;
 let isCaptureHintValid = null;
+let canKingMoveDuringCheck = false;
+let kingIsInCheckBool = false;
+let piecesCheckingTheKing = [];
+let piecesThatCanProtectKingDuringCheck = [];
 let mapOfDangerSquaresForKings = new Map();
 
 function blackButton() {
@@ -113,6 +117,46 @@ document.addEventListener("click", function (event) {
         preventKingFromEnteringDangerSquares(clickedElement);
     }
 
+    if(kingIsInCheckBool){
+        if(clickedElement.classList.contains("white-king") || clickedElement.classList.contains("black-king")){
+            canKingMoveDuringCheck = preventKingFromEnteringDangerSquares(clickedElement);
+        }
+
+        else if(canKingMoveDuringCheck && (!previousPiece.classList.contains("white-king") || !previousPiece.classList.contains("black-king"))){
+            canKingMoveDuringCheck = false;
+        }
+        
+        if(!canKingMoveDuringCheck){
+            let hints = document.getElementsByClassName("hint");
+            let captureHints = document.getElementsByClassName("capture-hint");
+            let captureHintsArray = Array.from(captureHints);
+            captureHintsArray.forEach((captureHint)=>{
+                let captureHintSquare = captureHint.parentNode;
+                if(!piecesCheckingTheKing.includes(captureHintSquare)){
+                    captureHint.remove();
+                }
+            });
+            if(!previousPiece.classList.contains("white-king") && currentPlayerColor === "white"){
+                while (hints.length > 0) {
+                    hints[0].remove();
+                }  
+            }
+            else if(!previousPiece.classList.contains("black-king") && currentPlayerColor === "black"){
+                while (hints.length > 0) {
+                    hints[0].remove();
+                }  
+            }
+            
+        }
+        
+        if(piecesThatCanProtectKingDuringCheck.includes(clickedElement) || piecesThatCanProtectKingDuringCheck.includes(clickedElement.parentNode)){
+            console.log("This piece can protect");
+        }
+        else{
+            console.log("This piece can not protect");
+        }
+    }
+
     if(clickedElement.classList.contains("capture-hint")){
         movePieceToHint(clickedElement);
         clearAllHints();
@@ -156,10 +200,21 @@ function movePieceToHint(hintElement) {
         isCaptureHintValid = false;
         if(piece.classList.contains("white-king")){
             hasWhiteKingCastled = true;
+            kingIsInCheckBool = false;
+            piecesCheckingTheKing.splice(0);
+            piecesThatCanProtectKingDuringCheck.splice(0);
         }
         else if(piece.classList.contains("black-king")){
             hasBlackKingCastled = true;
+            kingIsInCheckBool = false;
+            piecesCheckingTheKing.splice(0);
+            piecesThatCanProtectKingDuringCheck.splice(0);
         }
+
+        kingIsInCheckBool = false;
+        piecesCheckingTheKing.splice(0);
+        piecesThatCanProtectKingDuringCheck.splice(0);
+        
     }
 
     else{
@@ -167,9 +222,15 @@ function movePieceToHint(hintElement) {
        playMoveSelfSound();
        if(piece.classList.contains("white-king")){
         hasWhiteKingCastled = true;
+        kingIsInCheckBool = false;
+        piecesCheckingTheKing.splice(0);
+        piecesThatCanProtectKingDuringCheck.splice(0);
     }
     else if(piece.classList.contains("black-king")){
         hasBlackKingCastled = true;
+        kingIsInCheckBool = false;
+        piecesCheckingTheKing.splice(0);
+        piecesThatCanProtectKingDuringCheck.splice(0);
     } 
     }
     
@@ -936,6 +997,12 @@ function playCastleSound(){
     return;
 }
 
+function playCheckSound(){
+    let checkAudio = new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-check.mp3');
+    checkAudio.play();
+    return;
+}
+
 function getColorOfPiece(piece){
     let parts = piece.split('-');
     let colorOfPiece = parts[0];
@@ -1188,6 +1255,7 @@ function checkHintsFromPieceClick(){
             let captureHintSquare = captureHint.parentNode;
             if(captureHintSquare.classList.contains("white-king") || captureHintSquare.classList.contains("black-king")){
                 arrayOfDangerSquares.push(captureHintSquare);
+                piecesCheckingTheKing.push(previousPiece);
             }
         });
     }
@@ -1211,6 +1279,12 @@ function preventKingFromEnteringDangerSquares(king){
             hint.remove();
         }
     });
+    if(hints.length > 0){
+        return true;
+    }
+    else if(hints.length == 0){
+        return false;
+    }
 }
 
 function isKingInCheck(){
@@ -1219,13 +1293,70 @@ function isKingInCheck(){
     let blackKingDangerSquares = mapOfDangerSquaresForKings.get("danger-squares-black-king");
     whiteKingDangerSquares.forEach((square) => {
         if(square.classList.contains("white-king")){
-            console.log("White king is in check");
+            playCheckSound();
+            checkIfKingCanEscapeCheck();
+            kingIsInCheckBool = true;
         }
     });
 
     blackKingDangerSquares.forEach((square) => {
         if(square.classList.contains("black-king")){
-            console.log("Black king is in check");
+            playCheckSound();
+            kingIsInCheckBool = true;
         }
     });
+}
+
+function checkIfKingCanEscapeCheck(){
+    //First check if the king can escape the attack to a non danger square ------> (this happens preventKingFromEnteringDangerSquares() function)
+    //Scan all current player pieces to determine if a piece can protect or capture piece creating the check
+    //Do not allow player to move other pieces as that would allow the opponent to capture the king
+    //switchPlayerColor();
+    scanPiecesToCapturePieceCheckingKing();
+}
+
+function scanPiecesToCapturePieceCheckingKing(){
+    const pawns = document.querySelectorAll("."+currentPlayerColor+"-pawn");
+    const bishops = document.querySelectorAll("."+currentPlayerColor+"-bishop");
+    const knights = document.querySelectorAll("."+currentPlayerColor+"-knight");
+    const rooks = document.querySelectorAll("."+currentPlayerColor+"-rook");
+    const queens = document.querySelectorAll("."+currentPlayerColor+"-queen");
+    const king = document.querySelectorAll("."+currentPlayerColor+"-king");
+    pawns.forEach((pawn) => {
+        pawn.click();
+        canPieceCapturePieceCheckingKing(pawn);
+    });
+    bishops.forEach((bishop) => {
+        bishop.click();
+        canPieceCapturePieceCheckingKing(bishop);
+    });
+    knights.forEach((knight) => {
+        knight.click();
+        canPieceCapturePieceCheckingKing(knight);
+    });
+    rooks.forEach((rook) => {
+        rook.click();
+        canPieceCapturePieceCheckingKing(rook);
+    });
+    queens.forEach((queen) =>{
+        queen.click();
+        canPieceCapturePieceCheckingKing(queen);
+    });
+    king.forEach((king) =>{
+        king.click();
+        canPieceCapturePieceCheckingKing(king);
+    });
+    clearAllHints();
+}
+
+function canPieceCapturePieceCheckingKing(defendingPiece){
+    let captureHints = document.getElementsByClassName("capture-hint");
+    let captureHintsArray = Array.from(captureHints);
+    captureHintsArray.forEach((captureHint) => {
+        let captureSquare = captureHint.parentNode;
+        if(piecesCheckingTheKing.includes(captureSquare)){
+            piecesThatCanProtectKingDuringCheck.push(defendingPiece);
+        }
+    });
+
 }
