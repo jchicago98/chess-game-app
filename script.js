@@ -1139,7 +1139,7 @@ function updateDangerSquares(){
         clearAllHints();
 
         const whitePawns = document.querySelectorAll(".white-pawn");
-        if (whitePawns.length > 0 && !whitePawns[0].classList.contains("pieces-captured")) {
+        if (whitePawns.length > 0) {
             whitePawns.forEach((individualPawn) => {
                 if (!individualPawn.classList.contains("pieces-captured")) {
                     pawnCheckDangerSquares(individualPawn).slice(0).forEach((value) => {
@@ -1151,34 +1151,42 @@ function updateDangerSquares(){
         
         
         const whiteBishops = document.querySelectorAll(".white-bishop");
-        if (whiteBishops.length > 0 && !whiteBishops[0].classList.contains("pieces-captured")) {
+        if (whiteBishops.length > 0) {
             whiteBishops.forEach((individualBishop) => {
-                individualBishop.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteBishop.push(value); });
+                if(!individualBishop.classList.contains("pieces-captured")){
+                    individualBishop.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteBishop.push(value); });
+                }
             });
         }
 
         const whiteKnights = document.querySelectorAll(".white-knight");
-        if (whiteKnights.length > 0 && !whiteKnights[0].classList.contains("pieces-captured")) {
+        if (whiteKnights.length > 0) {
             whiteKnights.forEach((individualKnight) => {
-                individualKnight.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteKnight.push(value); });
+                if(!individualKnight.classList.contains("pieces-captured")){
+                    individualKnight.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteKnight.push(value); });
+                }
             });
         }
 
         const whiteRooks = document.querySelectorAll(".white-rook");
-        if (whiteRooks.length > 0 && !whiteRooks[0].classList.contains("pieces-captured")) {
+        if (whiteRooks.length > 0) {
             whiteRooks.forEach((individualRook) => {
-                individualRook.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteRook.push(value); });
+                if(!individualRook.classList.contains("pieces-captured")){
+                    individualRook.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteRook.push(value); }); 
+                } 
             });
         }
 
         const whiteQueens = document.querySelectorAll(".white-queen");
-        if (whiteQueens.length > 0 && !whiteQueens[0].classList.contains("pieces-captured")) {
+        if (whiteQueens.length > 0) {
             whiteQueens.forEach((individualQueen) => {
-                individualQueen.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteQueen.push(value); });
+                if(!individualQueen.classList.contains("pieces-captured")){
+                    individualQueen.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresWhiteQueen.push(value); });
+                }
             });
         }
 
@@ -1190,7 +1198,7 @@ function updateDangerSquares(){
         clearAllHints();
 
         const blackPawns = document.querySelectorAll(".black-pawn");
-        if (blackPawns.length > 0 && !blackPawns[0].classList.contains("pieces-captured")) {
+        if (blackPawns.length > 0) {
             blackPawns.forEach((individualPawn) => {
                 if (!individualPawn.classList.contains("pieces-captured")) {
                     pawnCheckDangerSquares(individualPawn).slice(0).forEach((value) => {
@@ -1201,34 +1209,43 @@ function updateDangerSquares(){
         }
 
         const blackBishops = document.querySelectorAll(".black-bishop");
-        if (blackBishops.length > 0 && !blackBishops[0].classList.contains("pieces-captured")) {
+        if (blackBishops.length > 0) {
             blackBishops.forEach((individualBishop) => {
-                individualBishop.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackBishop.push(value); });
+                if(!individualBishop.classList.contains("pieces-captured")){
+                   individualBishop.click();
+                   checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackBishop.push(value); }); 
+                }  
             });
         }
 
         const blackKnights = document.querySelectorAll(".black-knight");
-        if (blackKnights.length > 0 && !blackKnights[0].classList.contains("pieces-captured")) {
+        if (blackKnights.length > 0) {
             blackKnights.forEach((individualKnight) => {
-                individualKnight.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackKnight.push(value); });
+                if(!individualKnight.classList.contains("pieces-captured")){
+                    individualKnight.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackKnight.push(value); });
+                }
+                
             });
         }
 
         const blackRooks = document.querySelectorAll(".black-rook");
-        if (blackRooks.length > 0 && !blackRooks[0].classList.contains("pieces-captured")) {
+        if (blackRooks.length > 0) {
             blackRooks.forEach((individualRook) => {
-                individualRook.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackRook.push(value); });
+                if(!individualRook.classList.contains("pieces-captured")){
+                    individualRook.click();
+                    checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackRook.push(value); });
+                }
             });
         }
 
         const blackQueens = document.querySelectorAll(".black-queen");
-        if (blackQueens.length > 0 && !blackQueens[0].classList.contains("pieces-captured")) {
+        if (blackQueens.length > 0) {
             blackQueens.forEach((individualQueen) => {
-                individualQueen.click();
-                checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackQueen.push(value); });
+                if(!individualQueen.classList.contains("pieces-captured")){
+                   individualQueen.click();
+                   checkHintsFromPieceClick().slice(0).forEach((value) => { arrayOfDangerSquaresBlackQueen.push(value); }); 
+                }
             });
         }
     
